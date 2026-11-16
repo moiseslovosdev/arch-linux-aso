@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Guía informativa de Arch Linux: características, instalación, problemas frecuentes y soluciones.">
+  <title>Arch Linux | Guía ASO</title>
+  <style>
+    :root { color-scheme: dark; --bg:#090f1a; --panel:#111d2e; --panel2:#16263a; --text:#edf6ff; --muted:#a8bed1; --blue:#36b8ef; --border:#284159; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; font-family:system-ui,-apple-system,'Segoe UI',sans-serif; background:var(--bg); color:var(--text); line-height:1.65; }
+    a { color:inherit; text-decoration:none; }
+    .container { width:min(1120px,92%); margin:auto; }
+    header { position:sticky; top:0; z-index:10; background:rgba(9,15,26,.96); border-bottom:1px solid var(--border); }
+    nav { display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap; padding:15px 0; }
+    .brand { font-weight:850; font-size:1.15rem; letter-spacing:.02em; }
+    .brand span,.accent { color:var(--blue); }
+    .menu { display:flex; gap:10px; flex-wrap:wrap; }
+    .menu a { padding:7px 11px; border-radius:8px; font-size:.92rem; color:var(--muted); transition:.2s; }
+    .menu a:hover,.menu a:focus-visible { background:var(--panel2); color:white; outline:1px solid var(--border); }
+    .hero { padding:100px 0 85px; background:radial-gradient(ellipse at 75% 20%,#113958 0%,transparent 53%); }
+    .hero-grid { display:grid; grid-template-columns:1.3fr .8fr; align-items:center; gap:45px; }
+    .eyebrow { color:var(--blue); font-weight:750; letter-spacing:.14em; font-size:.78rem; text-transform:uppercase; }
+    h1 { font-size:clamp(2.6rem,6vw,5rem); line-height:1.08; margin:16px 0 20px; letter-spacing:-.05em; }
+    h2 { font-size:clamp(1.8rem,4vw,2.5rem); line-height:1.2; margin:0 0 14px; }
+    h3 { margin:0 0 8px; font-size:1.13rem; }
+    p { color:var(--muted); margin:0 0 16px; }
+    .lead { font-size:1.1rem; max-width:630px; }
+    .btn { display:inline-block; margin-top:13px; padding:12px 20px; background:var(--blue); color:#07121c; border-radius:9px; font-weight:800; }
+    .btn:hover { background:#7bd8ff; }
+    .terminal { border:1px solid #355574; border-radius:14px; overflow:hidden; box-shadow:0 20px 65px #0006; background:#080e17; }
+    .terminal-top { display:flex; align-items:center; gap:7px; padding:12px 16px; background:#18283c; border-bottom:1px solid var(--border); }
+    .dot { width:10px; height:10px; border-radius:50%; background:#ff6d72; }
+    .dot:nth-child(2) { background:#ffc55c; } .dot:nth-child(3) { background:#5edc9b; }
+    .terminal-top small { margin-left:10px; color:var(--muted); }
+    pre { white-space:pre-wrap; overflow-wrap:anywhere; margin:0; padding:24px; color:#bfe9ff; font: .93rem/1.8 ui-monospace,SFMono-Regular,Consolas,monospace; }
+    .prompt { color:#69e4ac; } .comment { color:#91a8bd; }
+    section { padding:75px 0; scroll-margin-top:90px; }
+    .section-intro { max-width:740px; margin-bottom:30px; }
+    .grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; }
+    .card { padding:25px; border:1px solid var(--border); border-radius:14px; background:linear-gradient(145deg,var(--panel),#0d1725); }
+    .card .number { display:inline-block; font-size:.85rem; font-weight:800; color:var(--blue); margin-bottom:12px; }
+    .card p:last-child { margin-bottom:0; }
+    .alternate { background:#0d1725; border-block:1px solid #1d344b; }
+    .steps { counter-reset:step; display:grid; gap:15px; }
+    .step { position:relative; padding:20px 22px 20px 70px; border:1px solid var(--border); border-radius:12px; background:var(--panel); }
+    .step:before { counter-increment:step; content:counter(step); position:absolute; left:20px; top:21px; display:grid; place-items:center; width:32px; height:32px; border-radius:50%; background:#174a69; color:#bfeaff; font-weight:800; }
+    .step p { margin-bottom:0; }
+    .problem-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
+    .problem { padding:23px; border-radius:13px; background:var(--panel); border:1px solid var(--border); }
+    .tag { display:inline-block; padding:3px 9px; border-radius:6px; background:#173f55; color:#8ee0ff; font-size:.78rem; font-weight:700; margin-bottom:10px; }
+    code { background:#07111e; border:1px solid #28445d; border-radius:5px; padding:2px 5px; color:#9de4ff; font-size:.91em; }
+    .notice { margin-top:25px; padding:17px 20px; border-left:3px solid var(--blue); background:#102337; border-radius:0 8px 8px 0; color:var(--muted); }
+    footer { padding:35px 0; border-top:1px solid var(--border); }
+    .footer-grid { display:flex; justify-content:space-between; align-items:center; gap:18px; flex-wrap:wrap; }
+    footer p { margin:3px 0; font-size:.9rem; }
+    @media(max-width:800px) { .hero-grid,.grid,.problem-grid { grid-template-columns:1fr; } .hero { padding:65px 0; } .terminal { max-width:570px; } section { padding:55px 0; } }
+    @media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="container" aria-label="Navegación principal">
+      <a class="brand" href="#inicio">&lt;<span>Arch</span>Linux /&gt;</a>
+      <div class="menu">
+        <a href="#que-es">¿Qué es?</a>
+        <a href="#caracteristicas">Características</a>
+        <a href="#instalacion">Instalación</a>
+        <a href="#problemas">Problemas y soluciones</a>
+        <a href="#contacto">Contacto</a>
+      </div>
+    </nav>
+  </header>
+  <main>
+    <section class="hero" id="inicio">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">Administración de Sistemas Operativos</div>
+          <h1>Control total.<br><span class="accent">Arch Linux.</span></h1>
+          <p class="lead">Descubrí una distribución GNU/Linux ligera, flexible y orientada a quienes quieren comprender y personalizar su sistema operativo.</p>
+          <a class="btn" href="#que-es">Explorar la guía ↓</a>
+        </div>
+        <div class="terminal" aria-label="Ejemplo de terminal de Arch Linux">
+          <div class="terminal-top"><span class="dot"></span><span class="dot"></span><span class="dot"></span><small>usuario@arch ~</small></div>
+          <pre><span class="prompt">$</span> uname -s
+Linux
+<span class="prompt">$</span> cat /etc/os-release
+NAME="Arch Linux"
+<span class="prompt">$</span> sudo pacman -Syu
+<span class="comment"># Mantener el sistema actualizado</span>
+<span class="prompt">$</span> echo "Keep it simple"
+Keep it simple</pre>
+        </div>
+      </div>
+    </section>
+    <section id="que-es">
+      <div class="container">
+        <div class="section-intro"><div class="eyebrow">01 / Introducción</div><h2>¿Qué es Arch Linux?</h2><p>Arch Linux es una distribución GNU/Linux de propósito general, independiente y de actualización continua (<em>rolling release</em>). Se caracteriza por ofrecer una base mínima que el usuario puede ampliar según sus necesidades.</p><p>Es popular entre estudiantes, desarrolladores y administradores que desean aprender cómo funciona su sistema operativo.</p></div>
+      </div>
+    </section>
+    <section class="alternate" id="caracteristicas">
+      <div class="container">
+        <div class="section-intro"><div class="eyebrow">02 / Ventajas</div><h2>Características principales</h2><p>Arch Linux apuesta por la simplicidad técnica, el control y la documentación.</p></div>
+        <div class="grid">
+          <article class="card"><span class="number">01 — ACTUALIZACIONES</span><h3>Rolling release</h3><p>Recibe actualizaciones continuas de paquetes, sin depender de grandes saltos entre versiones.</p></article>
+          <article class="card"><span class="number">02 — PAQUETES</span><h3>Pacman</h3><p>Su gestor de paquetes permite instalar, actualizar y eliminar software desde la terminal.</p></article>
+          <article class="card"><span class="number">03 — PERSONALIZACIÓN</span><h3>Elegís tu entorno</h3><p>Podés utilizar XFCE, KDE Plasma, GNOME u otros entornos, según los recursos y preferencias del equipo.</p></article>
+          <article class="card"><span class="number">04 — APRENDIZAJE</span><h3>Configuración manual</h3><p>Permite conocer particiones, arranque, servicios, red y componentes fundamentales de Linux.</p></article>
+          <article class="card"><span class="number">05 — DOCUMENTACIÓN</span><h3>ArchWiki</h3><p>Cuenta con documentación comunitaria extensa para instalación, mantenimiento y solución de errores.</p></article>
+          <article class="card"><span class="number">06 — FLEXIBILIDAD</span><h3>Sistema a tu medida</h3><p>Podés comenzar con una instalación básica y añadir solamente las herramientas que necesités.</p></article>
+        </div>
+      </div>
+    </section>
+    <section id="instalacion">
+      <div class="container">
+        <div class="section-intro"><div class="eyebrow">03 / Primeros pasos</div><h2>Proceso general de instalación</h2><p>Esta es una visión introductoria; los comandos y particiones exactos dependen del equipo. Consultá siempre la guía oficial antes de instalar.</p></div>
+        <div class="steps">
+          <div class="step"><h3>Preparar el medio de instalación</h3><p>Descargá la ISO oficial y prepará una memoria USB de arranque. Respaldá tus archivos antes de modificar discos.</p></div>
+          <div class="step"><h3>Conectarte y preparar el almacenamiento</h3><p>Verificá la conexión a Internet, el modo de arranque UEFI o BIOS y el esquema de particiones apropiado.</p></div>
+          <div class="step"><h3>Instalar el sistema base</h3><p>Instalá los paquetes esenciales, configurá el sistema, el usuario y el gestor de arranque siguiendo la documentación.</p></div>
+          <div class="step"><h3>Personalizar y mantener</h3><p>Configurá la red, el entorno gráfico y las aplicaciones. Mantené el sistema actualizado y revisá los avisos importantes.</p></div>
+        </div>
+        <div class="notice">Documentación oficial: <a class="accent" href="https://wiki.archlinux.org/title/Installation_guide" target="_blank" rel="noopener noreferrer">ArchWiki — Installation guide</a>.</div>
+      </div>
+    </section>
+    <section class="alternate" id="problemas">
+      <div class="container">
+        <div class="section-intro"><div class="eyebrow">04 / Soporte</div><h2>Problemas frecuentes y soluciones</h2><p>Algunas situaciones habituales y primeros pasos de diagnóstico.</p></div>
+        <div class="problem-grid">
+          <article class="problem"><span class="tag">PAQUETES</span><h3>Fallan las actualizaciones</h3><p>Comprobá Internet y los mensajes de <code>pacman</code>. Actualizá el sistema completo con <code>sudo pacman -Syu</code>; evitá las actualizaciones parciales.</p></article>
+          <article class="problem"><span class="tag">RED</span><h3>No hay conexión a Internet</h3><p>Verificá el estado de la interfaz y del servicio de red con <code>ip a</code> y <code>systemctl status NetworkManager</code>, si utilizás NetworkManager.</p></article>
+          <article class="problem"><span class="tag">ARRANQUE</span><h3>El sistema no inicia</h3><p>Revisá los mensajes de error, el gestor de arranque y las particiones. Desde un USB de rescate puede ser posible reparar la instalación.</p></article>
+          <article class="problem"><span class="tag">SERVICIOS</span><h3>Un servicio no funciona</h3><p>Consultá <code>systemctl status nombre-servicio</code> y los registros con <code>journalctl -u nombre-servicio</code> para identificar la causa.</p></article>
+        </div>
+        <div class="notice">Consejo: antes de ejecutar comandos de reparación, entendé qué modifican y respaldá la información importante.</div>
+      </div>
+    </section>
+  </main>
+  <footer id="contacto">
+    <div class="container footer-grid">
+      <div><div class="brand">&lt;<span>Arch</span>Linux /&gt;</div><p>Proyecto académico — Administración de Sistemas Operativos</p><p>Universidad de Oriente (UNIVO) · Grupo E</p></div>
+      <div><p><strong>Autor:</strong> Moisés Arias</p><p><strong>Contacto:</strong> Agregá aquí tu correo institucional</p><p>© 2026 · Sitio educativo no oficial</p></div>
+    </div>
+  </footer>
+</body>
+</html>
